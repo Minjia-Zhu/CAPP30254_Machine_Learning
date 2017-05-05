@@ -22,6 +22,35 @@ def find_features(df, features):
     pl.title("Variable Importance")
 
 
+
+def binning(df, feature, type_cut, quantiles = 0.5, bins = 1):
+    '''
+    Takes:
+        feature, a string with the name of the feature to put into bins
+        type_cut, quantiles or bins
+        quantiles, an int or array of quantiles
+        bins, an int or sequence of scalars
+    '''
+    valid_cuts = ['quantiles', 'bins']
+    assert type_cut in valid_cuts
+
+    bins = 'bins_{}'.format(feature)
+    if type_cut == 'quantiles':
+        df[bins] = pd.qcut(df[feature], quantiles, labels=False)
+    elif type_cut == 'n':
+        df[bins] = pd.cut(df[feature], bins, labels=False)
+
+
+def binarize(df, feature, control):
+    '''
+    Takes:
+        feature, a string of the name of the feature to binarize
+        control, the value of a feature that will have a zero value in the
+        new binarized feature 
+    '''
+    df[feature] = df[feature].apply(lambda x: 0 if x == control else 1)
+
+
 def generate_bins(df,var,size):
     '''
     Generate a list of bin boundary for categorical var

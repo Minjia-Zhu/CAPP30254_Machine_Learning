@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 
 def explore(df):
     '''
@@ -36,3 +37,30 @@ def explore_var(df,var,graph_type):
     d_var["graph"] = graph
     
     return d_var
+
+
+def plots(df):
+    '''
+    Takes:
+        data, a pd.dataframe 
+
+    Generates histograms in a separate folder
+    '''
+    print('Check the current folder for default histograms of these features.')
+    for feature in df.keys():
+        unique_vals = len(df[feature].value_counts())
+        figure = plt.figure()
+        if unique_vals == 1:
+            df.groupby(feature).size().plot(kind='bar')
+        elif unique_vals < 15:
+            bins = unique_vals
+            df[feature].hist(xlabelsize=10, ylabelsize=10, bins=unique_vals)
+        else:
+            df[feature].plot.hist()
+
+        plt.ylabel('Frequency')
+        plt.title('{}'.format(feature))
+        plt.savefig('histograms/{}'.format(feature) + '_hist')
+        plt.close()
+
+

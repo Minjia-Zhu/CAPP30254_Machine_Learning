@@ -12,6 +12,13 @@ def check_missing_data(df):
     return pd.crosstab(df_lng.variable, null_variables)
 
 
+
+#for c in proj.columns:
+    #if proj[c].count() < len(proj):
+        #missing_perc = ((len(proj) - proj[c].count()) / float(len(proj))) * 100.0
+        #print("%.1f%% missing from: Column %s" %(missing_perc, c))
+
+
 def clean(df,var,fill_method):
     '''
     In this assignment,this function is limited to fill in missing value for variables that have
@@ -29,7 +36,7 @@ def clean(df,var,fill_method):
     elif fill_method == "mean":
         df[var] = df[var].fillna(df[var].mean())
     elif fill_method == "drop":
-        df[var] = df[var].fillna(0)
+        df[var] = df[var].dropna()
     elif fill_method == "pad" or fill_method == "ffill":
         df[var] = df[var].fillna(method=fill_method)
     else: 
